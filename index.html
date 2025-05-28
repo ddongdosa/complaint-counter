@@ -638,7 +638,12 @@
             if (saved) {
                 try {
                     const data = JSON.parse(saved);
-                    counters = data.counters || counters;
+                    if (data.counters) {
+                        // 기존 데이터와 새로운 필드를 병합
+                        Object.keys(counters).forEach(key => {
+                            counters[key] = data.counters[key] || 0;
+                        });
+                    }
                     startTime = new Date(data.startTime) || startTime;
                 } catch (error) {
                     console.log('저장된 데이터를 불러올 수 없습니다.');
